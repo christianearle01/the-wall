@@ -1,0 +1,11 @@
+<div class="w-50 text-center mx-auto my-3 px-2 py-3 bg-light border border-4 border-primary rounded">
+    <h1>SIGN IN</h1>
+    <form action="/users" method="post">
+        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+        <input type="text" class="form-control fw-bold my-3 mx-auto w-25 border border-2" name="user[username]" id="user_username" placeholder="Username">
+        <input type= "submit" class="btn btn-medium btn-primary fw-bold" value= "Sign In" >
+    <form>
+    <div class="text-danger my-2">
+        <%= render inline: alert %>
+    </div>
+</div>

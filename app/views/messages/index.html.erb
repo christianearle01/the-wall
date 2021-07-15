@@ -1,0 +1,57 @@
+<div class="fixed-top bg-light">
+    <div class="navbar-inner w-100 px-3 pb-0">
+        <ul class="nav d-inline-block">
+            <li class="active">
+                <h5 class="brand">CodingDojo Wall</h5>
+            </li>
+        </ul>
+        <ul class="nav float-end">
+            <li class="d-inline-block me-4">
+                <h4>Welcome <%= @user.username %></h4>
+            </li>
+            <li class="d-inline-block mx-3">
+                <a href="/logout" class="pt-2 fw-bold fs-5">Log Out</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="container mt-5 pt-2">
+    <div class="w-50 d-inline-block">
+        <h3>Post a Message</h3>
+        <form action="/message" method="post">
+            <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+            <textarea class="form-control" name="message[message]" id="message_message"></textarea>
+            <input type="submit" class="btn btn-success btn-small fw-bold d-block ms-auto my-2" value="Post a Message"/>
+        </form>
+    </div>
+    <div class="d-inline-block mx-auto px-2 align-top text-center">
+        <% if alert %>
+            <h4>Error/s</h4>
+            <div class="text-danger my-2">
+                <%= render inline: alert %>
+            </div>
+        <% end %>
+    </div>
+    <% @message.each do |message| %>
+        <div>
+            <p class="fw-bold"><%= message.username %> - <%= message.created_at.strftime("%B #{message.created_at.day.ordinalize}, %Y") %></p>
+            <p class="ms-4"><%= message.message %></p>
+            <h4 class="ms-4">Comments:</h4>
+            <% @comments.each do |comment| %>
+                <% if comment.message_id == message.id %>
+                    <div class="ms-5">
+                        <p class="fw-bold"><%= comment.username %> - <%= comment.created_at.strftime("%B #{comment.created_at.day.ordinalize}, %Y") %></p>
+                        <p class="ms-4"><%= comment.comment %></p>
+                    </div>
+                <% end %>
+            <% end %>
+            <form class="w-50 ms-auto" action="/comment" method="post">
+                <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+                <input type="hidden" name="comment[message_id]" id="comment_comment" value="<%= message.id %>">
+                <textarea class="form-control" name="comment[comment]"></textarea>
+                <input type="submit" class="btn btn-success btn-small fw-bold d-block ms-auto my-2" value="Post a Comment"/>
+            </form>
+        </div>
+    <% end %>
+</div>
+
